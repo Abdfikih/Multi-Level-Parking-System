@@ -10,6 +10,7 @@ ENTITY control_payment IS
         inp_mode : IN STD_LOGIC;
         clk : IN STD_LOGIC;
         inp_plat : IN STD_LOGIC_VECTOR (15 DOWNTO 0);
+        out_mode : OUT std_logic;
         out_plat : OUT STD_LOGIC_VECTOR (15 DOWNTO 0)
     );
 END control_payment;
@@ -20,7 +21,6 @@ ARCHITECTURE control_payment_arch OF control_payment IS
     SIGNAL state : state_type;
 
     SIGNAL out_temp : STD_LOGIC_VECTOR (15 DOWNTO 0);
-    SIGNAL out_memory : parking_lot := parking_array;
     
 BEGIN
 
@@ -32,20 +32,12 @@ BEGIN
         VARIABLE price : INTEGER := 0;
         VARIABLE temp_i : INTEGER := 0;
         VARIABLE temp_j : INTEGER := 0;
- 
+        
     BEGIN
-    out_memory <= parking_array;
+
         IF rising_edge(clk) THEN
             CASE state IS
                 WHEN S0 =>
-                --parking_array(0,0).fee :=100;
-                    FOR i IN 0 TO 3 LOOP
-                        FOR j IN 0 TO 3 LOOP
-                            IF (inp_plat = parking_array(i, j).plate) THEN
-                                price := parking_array(i, j).fee;
-                            END if;
-                        END loop;
-                    END loop;
                     IF (inp_mode = '0' OR price > 0) THEN
                         FOR i IN 0 TO 3 LOOP
                             FOR j IN 0 TO 3 LOOP
@@ -54,14 +46,17 @@ BEGIN
                                     temp_i := i;
                                     temp_j := j;
                                     inp_time := now;
-                                    parking_array(i, j).timer := inp_time;
                                     exit;
                                 ELSE
                                     out_temp <= "0000000000000000";
                                 END IF;
                             END loop;
                         END LOOP;
+                        out_time := inp_time/TIME'val(1);
+                        REPORT "Biaya Parkir : " & INTEGER'image(out_time);
+                        out_mode <= '0';
                         parking_array(temp_i, temp_j).plate := inp_plat;
+                        parking_array(temp_i, temp_j).timer := inp_time;
                         state <= S1;
                     END IF;
                 WHEN S1 =>
@@ -70,25 +65,39 @@ BEGIN
                             FOR j IN 0 TO 3 LOOP
                                 IF (inp_plat = parking_array(i, j).plate) THEN
                                     out_temp <= parking_array(i, j).plate;
+                                    temp_i := i;
+                                    temp_j := j;
                                     inp_time := now;
                                     temp_time := parking_array(i, j).timer;
-                                    inp_time := temp_time - inp_time;
+                                    inp_time := inp_time - temp_time;
                                     out_time := inp_time/TIME'val(1);
-                                    price := out_time * 2000;
-                                    parking_array(i, j).fee := price;
                                 ELSE
                                     out_temp <= "0000000000000000";
                                 END IF;
                             END loop;
                         END LOOP;
+                        out_mode <= '0';
+                        parking_array(temp_i, temp_j).timer := out_time * TIME'val(1);
                         state <= S2;
                     END IF;
                 WHEN S2 =>
                     IF (inp_mode = '1' AND price > 0) THEN
-                        REPORT "Biaya Parkir : " & INTEGER'image(price);
-                        out_plat <= out_temp;
-                        state <= S0;
-                    END if;
+                    FOR i IN 0 TO 3 LOOP
+                        FOR j IN 0 TO 3 LOOP
+                            IF ((((parking_array(i, j).room_status = '1') 
+                            AND (parking_array(i, j).fee > 0)) AND (inp_plat = parking_array(i, j).plate))) THEN
+                                temp_i := i;
+                                temp_j := j;
+                                price := parking_array(temp_i, temp_j).timer/TIME'val(1) * 2000;
+                            END if;
+                        END loop;
+                    END loop;
+                REPORT "Biaya Parkir : " & INTEGER'image(price);
+                parking_array(temp_i, temp_j).fee := price;
+                parking_array(temp_i, temp_j).fee := price;
+                out_mode <= 1;
+                state <= S0;
+                END if;
             END CASE;
         END IF;
     END PROCESS;
