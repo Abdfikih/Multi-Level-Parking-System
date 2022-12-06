@@ -15,11 +15,13 @@ ENTITY Gate IS
         price : IN INTEGER := 0;
         clk : IN STD_LOGIC;
         overload_signal, enable : IN STD_LOGIC;
+        overload_out : OUT STD_LOGIC;
         password_ready : IN STD_LOGIC;
         licence_plate_in : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
-        --licence_plate_out : out std_logic_vector(15 downto 0);
+        licence_plate_out : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
         password_in : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
         password_out : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
+
         car_ready : OUT STD_LOGIC
         -- time_stamp : out integer
 
@@ -53,6 +55,7 @@ BEGIN
         car_ready <= '0';
         CASE present_state IS
             WHEN IDLE =>
+                car_ready <= '0';
                 IF gate_sensor = '1' THEN
                     next_state <= SELECTMODE;
                 ELSE
@@ -61,12 +64,90 @@ BEGIN
             WHEN SELECTMODE =>
                 IF enable = '1' AND mode = '1' THEN
                     next_state <= CARIN;
+
                 ELSIF enable = '1' AND mode = '0' THEN
                     next_state <= CAROUT;
                 ELSE
                     next_state <= SELECTMODE;
                 END IF;
             WHEN CAROUT =>
+                IF password_ready = '1' THEN
+
+                    IF (parking_array(0, 0).password = password_in AND parking_array(0, 0).plate = licence_plate_in) THEN
+                        itemp := 0;
+                        jtemp := 0;
+                        next_state <= PASSSUCCESS;
+                    ELSIF (parking_array(0, 1).password = password_in AND parking_array(0, 1).plate = licence_plate_in) THEN
+                        itemp := 0;
+                        jtemp := 1;
+                        next_state <= PASSSUCCESS;
+                    ELSIF (parking_array(0, 2).password = password_in AND parking_array(0, 2).plate = licence_plate_in) THEN
+                        itemp := 0;
+                        jtemp := 2;
+                        next_state <= PASSSUCCESS;
+                    ELSIF (parking_array(0, 3).password = password_in AND parking_array(0, 3).plate = licence_plate_in) THEN
+                        itemp := 0;
+                        jtemp := 3;
+                        next_state <= PASSSUCCESS;
+                    ELSIF (parking_array(1, 0).password = password_in AND parking_array(1, 0).plate = licence_plate_in) THEN
+                        itemp := 1;
+                        jtemp := 0;
+                        next_state <= PASSSUCCESS;
+                    ELSIF (parking_array(1, 1).password = password_in AND parking_array(1, 1).plate = licence_plate_in) THEN
+                        itemp := 1;
+                        jtemp := 1;
+                        next_state <= PASSSUCCESS;
+                    ELSIF (parking_array(1, 2).password = password_in AND parking_array(1, 2).plate = licence_plate_in) THEN
+                        itemp := 1;
+                        jtemp := 2;
+                        next_state <= PASSSUCCESS;
+                    ELSIF (parking_array(1, 3).password = password_in AND parking_array(1, 3).plate = licence_plate_in) THEN
+                        itemp := 1;
+                        jtemp := 3;
+                        next_state <= PASSSUCCESS;
+                    ELSIF (parking_array(2, 0).password = password_in AND parking_array(2, 0).plate = licence_plate_in) THEN
+                        itemp := 2;
+                        jtemp := 0;
+                        next_state <= PASSSUCCESS;
+                    ELSIF (parking_array(2, 1).password = password_in AND parking_array(2, 1).plate = licence_plate_in) THEN
+                        itemp := 2;
+                        jtemp := 1;
+                        next_state <= PASSSUCCESS;
+                    ELSIF (parking_array(2, 2).password = password_in AND parking_array(2, 2).plate = licence_plate_in) THEN
+                        itemp := 2;
+                        jtemp := 2;
+                        next_state <= PASSSUCCESS;
+                    ELSIF (parking_array(2, 3).password = password_in AND parking_array(2, 3).plate = licence_plate_in) THEN
+                        itemp := 2;
+                        jtemp := 3;
+                        next_state <= PASSSUCCESS;
+                    ELSIF (parking_array(3, 0).password = password_in AND parking_array(3, 0).plate = licence_plate_in) THEN
+                        itemp := 3;
+                        jtemp := 0;
+                        next_state <= PASSSUCCESS;
+                    ELSIF (parking_array(3, 1).password = password_in AND parking_array(3, 1).plate = licence_plate_in) THEN
+                        itemp := 3;
+                        jtemp := 1;
+                        next_state <= PASSSUCCESS;
+                    ELSIF (parking_array(3, 2).password = password_in AND parking_array(3, 2).plate = licence_plate_in) THEN
+                        itemp := 3;
+                        jtemp := 2;
+                        next_state <= PASSSUCCESS;
+                    ELSIF (parking_array(3, 3).password = password_in AND parking_array(3, 3).plate = licence_plate_in) THEN
+                        itemp := 3;
+                        jtemp := 3;
+                        next_state <= PASSSUCCESS;
+                    ELSE
+                        next_state <= PASSFAIL;
+                    END IF;
+                    parking_array(itemp, jtemp).room_status := '0';
+                    parking_array(itemp, jtemp).plate := (OTHERS => '0');
+                    parking_array(itemp, jtemp).timer := 0 ns;
+                    parking_array(itemp, jtemp).password := (OTHERS => '0');
+
+                ELSE
+                    next_state <= CAROUT;
+                END IF;
 
             WHEN CARIN =>
                 IF overload_signal = '1' THEN
@@ -75,32 +156,78 @@ BEGIN
                     next_state <= LICENSEINSERT;
 
                 END IF;
+
             WHEN LICENSEINSERT =>
                 IF lift_sensor = '1' AND NOT (licence_plate_in = "0000000000000000") THEN
-                    FOR i IN 0 TO 3 LOOP
-                        FOR j IN 0 TO 3 LOOP
-                            IF (parking_array(i, j).room_status = '0') THEN
-                                itemp := i;
-                                jtemp := j;
-                                header <= STD_LOGIC_VECTOR(to_unsigned(i, 2)) & STD_LOGIC_VECTOR(to_unsigned(j, 2));
-                                EXIT;
-                            END IF;
-                        END LOOP;
-                    END LOOP;
+                    IF (parking_array(0, 0).room_status = '0') THEN
+                        itemp := 0;
+                        jtemp := 0;
+                    ELSIF (parking_array(0, 1).room_status = '0') THEN
+                        itemp := 0;
+                        jtemp := 1;
+                    ELSIF (parking_array(0, 2).room_status = '0') THEN
+                        itemp := 0;
+                        jtemp := 2;
+                    ELSIF (parking_array(0, 3).room_status = '0') THEN
+                        itemp := 0;
+                        jtemp := 3;
+                    ELSIF (parking_array(1, 0).room_status = '0') THEN
+                        itemp := 1;
+                        jtemp := 0;
+                    ELSIF (parking_array(1, 1).room_status = '0') THEN
+                        itemp := 1;
+                        jtemp := 1;
+                    ELSIF (parking_array(1, 2).room_status = '0') THEN
+                        itemp := 1;
+                        jtemp := 2;
+                    ELSIF (parking_array(1, 3).room_status = '0') THEN
+                        itemp := 1;
+                        jtemp := 3;
+                    ELSIF (parking_array(2, 0).room_status = '0') THEN
+                        itemp := 2;
+                        jtemp := 0;
+                    ELSIF (parking_array(2, 1).room_status = '0') THEN
+                        itemp := 2;
+                        jtemp := 1;
+                    ELSIF (parking_array(2, 2).room_status = '0') THEN
+                        itemp := 2;
+                        jtemp := 2;
+                    ELSIF (parking_array(2, 3).room_status = '0') THEN
+                        itemp := 2;
+                        jtemp := 3;
+                    ELSIF (parking_array(3, 0).room_status = '0') THEN
+                        itemp := 3;
+                        jtemp := 0;
+                    ELSIF (parking_array(3, 1).room_status = '0') THEN
+                        itemp := 3;
+                        jtemp := 1;
+                    ELSIF (parking_array(3, 2).room_status = '0') THEN
+                        itemp := 3;
+                        jtemp := 2;
+                    ELSIF (parking_array(3, 3).room_status = '0') THEN
+                        itemp := 3;
+                        jtemp := 3;
+                    END IF;
+                    parking_array(itemp, jtemp).room_status := '1';
                     parking_array(itemp, jtemp).plate := licence_plate_in;
-                    parking_array(to_integer(unsigned(header(1 DOWNTO 0))), to_integer(unsigned(header(3 DOWNTO 2)))).password := licence_plate_in & licence_plate_in;
-                    parking_array(to_integer(unsigned(header(1 DOWNTO 0))), to_integer(unsigned(header(3 DOWNTO 2)))).room_status := '1';
+                    parking_array(itemp, jtemp).timer := now;
+                    parking_array(itemp, jtemp).password := licence_plate_in & licence_plate_in;
+                    licence_plate_out <= licence_plate_in;
                     next_state <= INSUCCESS;
                 ELSE
                     next_state <= LICENSEINSERT;
                 END IF;
+
             WHEN INSUCCESS =>
                 car_ready <= '1';
-                --parking_array(0, 1).plate := "1111000011110000";
                 next_state <= IDLE;
             WHEN PASSFAIL =>
+
+                next_state <= IDLE;
             WHEN PASSSUCCESS =>
+                next_state <= IDLE;
             WHEN OVERLOAD =>
+                next_state <= IDLE;
         END CASE;
     END PROCESS;
 
