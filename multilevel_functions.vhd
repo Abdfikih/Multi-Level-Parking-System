@@ -7,24 +7,27 @@ USE ieee.math_real.ALL;
 USE work.room_memory.ALL;
 
 PACKAGE multilevel_functions IS
-    -- function findindex return std_logic_vector;
+
+    FUNCTION hash(inputhash : STD_LOGIC_VECTOR(15 DOWNTO 0)) RETURN STD_LOGIC_VECTOR;
+
+ 
 
 END PACKAGE multilevel_functions;
 
 PACKAGE BODY multilevel_functions IS
-    -- function findindex () return std_logic_vector is
-    -- variable index : std_logic_vector (0 to 3);
-    -- variable i,j : integer;
-    -- begin
-    --     for i in 0 to 3 loop
-    --         for j in 0 to 3 loop
-    --             if (parking_array(i,j).room_status = '0') then
-    --                 index := std_logic_vector(to_unsigned(i,2)) & std_logic_vector(to_unsigned(j,2));
 
-    --             end if;
-    --         end loop;
-    --     end loop;
-    --     return "0000";
-    -- end function findindex;
+    FUNCTION hash(inputhash : STD_LOGIC_VECTOR(15 DOWNTO 0)) RETURN STD_LOGIC_VECTOR IS
+        VARIABLE result : STD_LOGIC_VECTOR(31 DOWNTO 0);
+    BEGIN
+
+        result(31 DOWNTO 24) := inputhash(15 DOWNTO 8) XOR inputhash(7 DOWNTO 0);
+        result(23 DOWNTO 16) := inputhash(7 DOWNTO 0) XOR inputhash(15 DOWNTO 8);
+        result(15 DOWNTO 8) := inputhash(15 DOWNTO 8) XOR inputhash(7 DOWNTO 0) XOR inputhash(15 DOWNTO 8);
+        result(7 DOWNTO 0) := inputhash(7 DOWNTO 0) XOR inputhash(15 DOWNTO 8) XOR inputhash(7 DOWNTO 0);
+
+        RETURN result;
+    END FUNCTION;
+
+    
 
 END PACKAGE BODY multilevel_functions;
