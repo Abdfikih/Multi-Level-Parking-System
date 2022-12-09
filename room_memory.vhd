@@ -1,31 +1,27 @@
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
-use ieee.math_real.all;
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
+USE ieee.math_real.ALL;
 
-package room_memory is 
+PACKAGE room_memory IS
 
-    type room is record
-        room_status : std_logic;
-        fee : integer;
-        timer : time;
-        password : std_logic_vector(31 downto 0);
-        plate : std_logic_vector(15 downto 0);
-    end record;
+    TYPE room IS RECORD
+        room_status : STD_LOGIC;
+        fee : INTEGER;
+        timer : TIME;
+        password : STD_LOGIC_VECTOR(31 DOWNTO 0);
+        plate : STD_LOGIC_VECTOR(15 DOWNTO 0);
+    END RECORD;
 
-
-    type parking_lot is array (3 downto 0, 3 downto 0) of room;    
-    constant def_password : std_logic_vector(31 downto 0) := (others => '0') ;
-    constant def_plate : std_logic_vector(15 downto 0) := (others  => '0');
     
-    shared variable parking_array : parking_lot := (
-        (('0', 0, 0 min, def_password, def_plate), ('0', 0, 0 min, def_password, def_plate), ('0', 0, 0 min, def_password, def_plate), ('0', 0, 0 min, def_password, def_plate)),
+    TYPE parking_lot IS ARRAY (3 DOWNTO 0, 3 DOWNTO 0) OF room;
+    CONSTANT def_password : STD_LOGIC_VECTOR(31 DOWNTO 0) := (OTHERS => '0');
+    CONSTANT def_plate : STD_LOGIC_VECTOR(15 DOWNTO 0) := (OTHERS => '0');
+
+    SHARED VARIABLE parking_array : parking_lot := (
+    (('0', 0, 0 min, def_password, def_plate), ('0', 0, 0 min, def_password, def_plate), ('0', 0, 0 min, def_password, def_plate), ('0', 0, 0 min, def_password, def_plate)),
         (('0', 0, 0 min, def_password, def_plate), ('0', 0, 0 min, def_password, def_plate), ('0', 0, 0 min, def_password, def_plate), ('0', 0, 0 min, def_password, def_plate)),
         (('0', 0, 0 min, def_password, def_plate), ('0', 0, 0 min, def_password, def_plate), ('0', 0, 0 min, def_password, def_plate), ('0', 0, 0 min, def_password, def_plate)),
         (('0', 0, 0 min, def_password, def_plate), ('0', 0, 0 min, def_password, def_plate), ('0', 0, 0 min, def_password, def_plate), ('0', 0, 0 min, def_password, def_plate))
     );
-    
-end room_memory;
-
-
-
+END room_memory;
