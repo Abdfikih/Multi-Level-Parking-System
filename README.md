@@ -1,4 +1,4 @@
-# :car: Multi-Level Parking System/Program
+# :car: Multi-Level Parking System/Program :car:
 ## *BACKGROUND*
 Currently, many urban areas face challenges with parking due to a growing population and an increasing number of vehicles. Traditional surface-level parking lots are often unable to keep up with the demand for parking, leading to traffic congestion, long search times for parking spots, and frustration for drivers. That's why we create multi-level parking systems.
 Multi-level parking systems offer a solution to these challenges by providing additional parking capacity in a smaller footprint. These systems typically consist of several levels of parking stacked on top of each other, with ramps or elevators to access the different levels. This allows for more cars to be parked in a given area compared to a traditional surface-level parking lot.
@@ -29,23 +29,30 @@ Automatic parking assignment refers to the use of technology to automatically as
 ### Calculate The Parking Fee According To The Duration
 Calculating the fee for parking refers to the process of determining the amount of money that a driver should pay to park their car in a parking system. The fee can be based on various factors, such as the duration of the parking. To calculate the fee for parking, the parking system may use inputs, such as the time that the car entered the parking system and the time that the car left the parking system. Once the inputs have been collected and processed, the system can use the rules or algorithms to calculate the fee for parking. The result of the calculation can be displayed to the driver and it can be automatically applied to the payment process.
 
-## *How To Run Code*
+## *Circuit Diagram Schematic*
 
 
 ## *Application Program Reports*
 
 
 ## *Functions*
-### *Functions 1*
+### *Gate*
+The system has a feature where when a car enters the gate, a check will be made on the availability of parking spaces. If the parking space is full, the lights will turn on and if it is available, the lights will turn off. When the parking space is available, the input of the license plate number will be made. When the license plate number is entered, the license plate number will be converted into a 32-bit password where the encryption algorithm has been determined in the code.
 
-### *Functions 2*
+### *Lift Controller*
+After passing through the gate, the car will enter the lift which shows the available parking space. The parking space will be filled starting from the lowest floor to the highest floor. In this program, there are 4 floors and each floor has 4 parking space positions.
 
-### *Functions 3*
+### *Payment Control*
+In the payment controller, there will be calculations on the parking fees for each car based on the duration of the parking time. The time will be multiplied by the unit parking fee that has been determined. The time taken is the time when storing and releasing the car recorded on the gate that is adjusted to the simulation time of the program so that each car will have different time variations and looks more realistic.
 
-### *Functions 4*
+### *Room Memory*
+Room memory is a storage type record in VHDL. Room memory will store the license plate number, password, parking status, time of entry and exit, and parking fee. The stored data will be the foundation in the running of this circuit program. After the car exits, the stored data for the car will be erased.
 
-### *Functions 5*
+### *Multilevel*
+Multilevel is used as a storage for several packages that will be used in the program so that the program can be run as it should. Here there is also an algorithm used to do hashing password of 32 bits. In this multilevel there are also various states that will be used.
 
-### *Functions 6*
+### *Mux 4 to 1*
+Mux 4 to 1 will function as a selector for which output will be displayed on the seven-segment, whether to display the output of the 16-bit input/out license plate number and the 32-bit input/out password which means that 8 seven-segment are needed
 
-### *Functions 7*
+### *Seven Segment*
+The seven segment will display the output of the 16-bit input/out license plate number and the 32-bit input/out password. Here the license plate that is 16 bits will be ampersanded so that it can become 32 bits and there will be 8 seven segments which are hexadecimal so that 1 seven segment processes 4 bits.
