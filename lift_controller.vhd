@@ -1,93 +1,114 @@
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
-use ieee.math_real.all;
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
+USE ieee.math_real.ALL;
 
-use work.room_memory.all;
+USE work.room_memory.ALL;
+ENTITY lift_controller IS
+    PORT (
+        clk : IN STD_LOGIC;
+        reset : IN STD_LOGIC := '0';
 
+        -- memberi tahu posisi ruangan yang akan dituju 
+        position_header : IN STD_LOGIC_VECTOR(3 DOWNTO 0) := (OTHERS => '0'); --kl mau parkir nilainya dpt dari function, kl mau ambil nilanya dapet dr password
 
-entity lift_controller is
-    port (
-        clk   : in std_logic;
-        reset : in std_logic := '0';
-        position_header : in std_logic_vector(3 downto 0) := (others => '0'); --kl mau parkir nilainya dpt dari function, kl mau ambil nilanya dapet dr password
-        paid : in std_logic := '0';
-        park_or_pick : in std_logic := '0';
-        close_door : out std_logic := '0';
-        ready : out std_logic := '0'
+        -- if pick, tell wether the client is already paid or not
+        paid : IN STD_LOGIC := '0';
+
+        --00 : no client
+        --01 : park in
+        --10 : pick up
+        --11 : done
+        lifting_state : INOUT STD_LOGIC_VECTOR(1 DOWNTO 0) := (OTHERS => '0');
+
+        --0 : closed
+        --1 : open
+        --lift_door : OUT STD_LOGIC := '0';
+
+        --to 1 if lifting state is 11
+        ready : INOUT STD_LOGIC := '0'
 
     );
-end entity lift_controller;
+END ENTITY lift_controller;
 
-architecture rtl of lift_controller is
-    TYPE states IS (Base_floor, Search_floor, Search_room, Pick, Park);
-	SIGNAL present_state, next_state : states := base_floor;   
-    signal number_of_floor : integer := 0;
-    signal number_of_room : integer := 0;
-    signal out_park : parking_lot := parking_array;  
-    signal current_floor : integer := 0;
-    signal current_room : integer := 0; 
-    signal lifting_state : std_logic_vector(1 downto 0) := (others => '0'); 
-begin
+ARCHITECTURE rtl OF lift_controller IS
+    TYPE states IS (base_floor, search_floor, search_room, pick, park);
+    SIGNAL present_state, next_state : states := base_floor;
+    
+    SIGNAL number_of_floor : INTEGER := 0;
+    SIGNAL number_of_room : INTEGER := 0;
+    SIGNAL current_floor : INTEGER := 0;
+    SIGNAL current_room : INTEGER := 0;
+
+    SIGNAL out_park : parking_lot := parking_array;
+   
+BEGIN
     proc_sync : PROCESS (CLK, next_state)
-	BEGIN
-		IF (rising_edge(CLK))
-			THEN
-			present_state <= next_state;
-		END IF;
-	END PROCESS proc_sync;
+    BEGIN
+        IF (rising_edge(CLK))
+            THEN
+            present_state <= next_state;
+        END IF;
+    END PROCESS proc_sync;
 
-    proc_comb : process (present_state, current_floor, current_room, lifting_state, paid, position_header)
-    begin
-        number_of_floor <= to_integer(unsigned(position_header(3 downto 2)));
-        number_of_room <= to_integer(unsigned(position_header(1 downto 0)));
-        if park_or_pick = '0' then lifting_state <= "01";
-        else lifting_state <= "10"; 
-        end if;
+    proc_comb : PROCESS (present_state, current_floor, current_room, lifting_state, paid, position_header)
+    BEGIN
+        number_of_floor <= to_integer(unsigned(position_header(3 DOWNTO 2)));
+        number_of_room <= to_integer(unsigned(position_header(1 DOWNTO 0)));
+        out_park <= parking_array;
 
-        case present_state is 
-            when Base_floor =>
-                if lifting_state = "00" or (lifting_state = "1-" and paid = '0') 
-                    then next_state <= Base_floor;
-                else next_state <= Search_floor;
-                end if;
+        CASE present_state IS
+            WHEN base_floor =>
+                --toggling the ready signal back to 0
+                if(ready = '1') then ready <= '0'; end if;
 
-            when Search_floor =>
-                if current_floor = number_of_floor then
-                    next_state <= Search_room;
-                else 
+                IF lifting_state = "00" OR 
+                   lifting_state = "11" OR 
+                  (lifting_state = "10" and paid = '0')
+                    THEN
+                    next_state <= base_floor;
+                ELSE
+                    next_state <= search_floor;
+                END IF;
+
+            WHEN search_floor =>
+                IF current_floor = number_of_floor THEN
+                    next_state <= search_room;
+                ELSE
                     current_floor <= current_floor + 1;
-                end if;
-                
-            
-            when Search_room =>
-                if current_room = number_of_room then
-                    if lifting_state = "01" then
-                        next_state <= Park;
-                    else
-                        next_state <= Pick;
-                    end if;
-                else 
-                    current_room <= current_room + 1;
-                end if;
-                
-            when Pick =>
-                ready <= '1';
-                next_state <= Base_floor;
-                current_floor <= 0;
-                current_room <= 0;
+                END IF;
 
-            when Park =>
+            WHEN search_room =>
+                IF current_room = number_of_room THEN
+                    IF lifting_state = "01" THEN
+                        next_state <= Park;
+                    ELSE
+                        next_state <= Pick;
+                    END IF;
+                ELSE
+                    current_room <= current_room + 1;
+                END IF;
+
+            WHEN Pick =>
+                ready <= '1';
+                
+            WHEN Park =>
                 parking_array(number_of_floor, number_of_room).room_status := '1';
                 ready <= '1';
-                next_state <= Base_floor;
+                next_state <= base_floor;
                 current_floor <= 0;
                 current_room <= 0;
-        end case;
-    end process;
-    
+        END CASE;
 
-end architecture;
+        if(ready = '1') then 
+            lifting_state <= "11";
+            next_state <= base_floor;
+            current_floor <= 0;
+            current_room <= 0;
+        end if;
+    END PROCESS;
+END ARCHITECTURE;
+
 
 
 --read the the lifting state : pick or put 
