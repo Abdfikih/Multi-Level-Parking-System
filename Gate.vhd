@@ -15,7 +15,7 @@ ENTITY Gate IS
         mode : IN STD_LOGIC;
         clk : IN STD_LOGIC;
         paid : IN STD_LOGIC;
-        overload_signal, enable : IN STD_LOGIC;
+        enable : IN STD_LOGIC;
         overload_out : OUT STD_LOGIC;
         password_ready : IN STD_LOGIC;
         header_out : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
