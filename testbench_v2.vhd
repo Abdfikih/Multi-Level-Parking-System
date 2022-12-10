@@ -35,7 +35,7 @@ architecture rtl of testbench_v2 is
         password_in : std_logic_vector(31 downto 0);
     end record; 
 
-    type array_tb is array (natural range <>) of vector_tb;
+    type array_tb is array (0 to 4) of vector_tb;
     constant test_cases : array_tb := (
         --#1 in success
         ('1', '1', '1', '0', '1', '0', car_plate(15), def_password), 
@@ -60,7 +60,7 @@ architecture rtl of testbench_v2 is
     SIGNAL header_out_tb : STD_LOGIC_VECTOR(3 DOWNTO 0) := (others => '0');
     SIGNAL licence_plate_in_tb : STD_LOGIC_VECTOR(15 DOWNTO 0);
     SIGNAL password_in_tb : STD_LOGIC_VECTOR(31 DOWNTO 0);
-    SIGNAL password_out_tb : STD_LOGIC_VECTOR(31 DOWNTO 0) := (others => '0');
+    SIGNAL display_out_tb : STD_LOGIC_VECTOR(31 DOWNTO 0) := (others => '0');
     SIGNAL car_ready_tb : STD_LOGIC := '0';
     SIGNAL price_out_tb : INTEGER := 0;
     SIGNAL pass_status_tb : STD_LOGIC := '0';
@@ -69,7 +69,7 @@ architecture rtl of testbench_v2 is
 begin
     gate : entity work.Gate
         port map (gate_sensor_tb, lift_sensor_tb, mode_tb, CLK_tb, paid_tb, enable_tb, overload_out_tb, 
-                  password_ready_tb, header_out_tb, licence_plate_in_tb, password_in_tb, password_out_tb, 
+                  password_ready_tb, header_out_tb, licence_plate_in_tb, password_in_tb, display_out_tb, 
                   car_ready_tb, price_out_tb, pass_status_tb);
     
     CLK_tb <= NOT CLK_tb After 100 ps;
@@ -97,7 +97,7 @@ begin
         end if;
              
         assert not initialization_done 
-            report "PARKING ROOM IS FULL 15!"
+            report "[PARKING ROOM SLOT 15/16]"
             severity note;
 
         for i in test_cases'range loop
@@ -113,7 +113,7 @@ begin
             if i = 0 then
                 wait for 1499 ps;
                 assert car_ready_tb = '0'
-                    report "Mobil berhasil diparkir di ruangan " 
+                    report "The car has been successfully parked in the room " 
                            & INTEGER'image(to_integer(unsigned(header_out_tb(3 DOWNTO 2)))) & ", "
                            & INTEGER'image(to_integer(unsigned(header_out_tb(1 DOWNTO 0))))
                     severity note;
@@ -121,22 +121,22 @@ begin
             elsif i = 1 then
                 wait for 1000 ps;
                 assert overload_out_tb = '0'
-                    report "Mobil tidak berhail diparkir karena ruangan overload" 
+                    report "The car cannot be parked because the room is overloaded" 
                     severity note;
             elsif i = 2 then
                 wait for 800 ps;
                 assert pass_status_tb = '1'
-                    report "Mobil tidak bisa diambil karena password salah" 
+                    report "The car cannot be picked because the password doesn't match" 
                     severity note;
             elsif i = 3 then
                 wait for 800 ps;
                 assert paid_tb = '1'
-                    report "Mobil tidak bisa diambil karena fee belum dibayar" 
+                    report "The car cannot be picked because the parking fee has not been paid" 
                     severity note;
             elsif i = 4 then
                 wait for 800 ps;
                 assert pass_status_tb = '0'
-                report "Mobil berhasil diambil dari ruangan" 
+                report "The car has been picked successfully from the room" 
                 severity note;
             end if; 
 

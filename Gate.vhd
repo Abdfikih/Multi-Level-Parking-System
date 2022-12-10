@@ -20,45 +20,63 @@ ENTITY Gate IS
         header_out : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
         licence_plate_in : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
         password_in : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-        password_out : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
+        display_out : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
         car_ready : OUT STD_LOGIC;
         price_out : OUT INTEGER;
         pass_status : OUT STD_LOGIC := '0'
         -- time_stamp : out integer
-
     );
 END ENTITY;
 
 ARCHITECTURE rtl OF Gate IS
+    COMPONENT mux_4to1 IS
+        PORT (
+            PlatIn, PlatOut : IN STD_LOGIC_VECTOR (15 DOWNTO 0);
+            PassIn, PassOut : IN STD_LOGIC_VECTOR (31 DOWNTO 0);
+            Sel : IN STD_LOGIC_VECTOR (1 DOWNTO 0);
+            Zout : OUT STD_LOGIC_VECTOR (31 DOWNTO 0)
+        );
+    END COMPONENT;
+
+    COMPONENT sevenSegment IS
+        PORT (
+            Bin : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+            Outer : OUT STD_LOGIC_VECTOR(6 DOWNTO 0)
+        );
+    END COMPONENT;
 
     COMPONENT lift_controller IS
         PORT (
             clk : IN STD_LOGIC;
-            position_header : IN STD_LOGIC_VECTOR(3 DOWNTO 0) := (OTHERS => '0'); 
+            position_header : IN STD_LOGIC_VECTOR(3 DOWNTO 0) := (OTHERS => '0');
             enable : IN STD_LOGIC := '0';
             mode : IN STD_LOGIC := '0';
             ready : INOUT STD_LOGIC := '0'
 
         );
-            end COMPONENT lift_controller;
+    END COMPONENT lift_controller;
 
     --State machine
+    CONSTANT offscreen : STD_LOGIC_VECTOR(15 DOWNTO 0) := (OTHERS => '0');
 
     SIGNAL present_state, next_state : state_type;
     SIGNAL position_header : STD_LOGIC_VECTOR(3 DOWNTO 0);
     SIGNAL enablelift : STD_LOGIC := '0';
+    SIGNAL sel : STD_LOGIC_VECTOR(1 DOWNTO 0) := "00";
     SIGNAL lifting_state : STD_LOGIC_VECTOR(1 DOWNTO 0) := (OTHERS => '0');
     SIGNAL liftready : STD_LOGIC;
-
     SIGNAL password_sig : STD_LOGIC_VECTOR(31 DOWNTO 0);
     SIGNAL park : parking_lot := parking_array;
-
     SIGNAL header : STD_LOGIC_VECTOR(3 DOWNTO 0);
     SIGNAL priceout : INTEGER;
+
 BEGIN
+    mux : mux_4to1 PORT MAP(
+        offscreen, licence_plate_in, password_sig, password_in, sel, display_out
+    );
 
     controllift : lift_controller PORT MAP(clk, header, enablelift, mode, liftready);
-    
+
     --synchronize process
     sync_proc : PROCESS (clk, next_state)
     BEGIN
@@ -73,12 +91,12 @@ BEGIN
         VARIABLE overload_var : STD_LOGIC;
         VARIABLE pass_stat_var : STD_LOGIC;
     BEGIN
-        password_out <= password_sig;
+        sel <= "00";
         park <= parking_array;
         header_out <= header;
         overload_out <= overload_var;
         pass_status <= pass_stat_var;
-        CASE present_state IS 
+        CASE present_state IS
             WHEN IDLE =>
                 car_ready <= '0';
                 overload_var := '0';
@@ -97,8 +115,10 @@ BEGIN
                 ELSE
                     next_state <= SELECTMODE;
                 END IF;
+
             WHEN CAROUT =>
                 IF password_ready = '1' THEN
+                    sel <= "11";
                     next_state <= PASSSUCCESS;
                     IF (parking_array(0, 0).password = password_in) THEN
                         header_out <= "0000";
@@ -186,6 +206,7 @@ BEGIN
 
             WHEN LICENSEINSERT =>
                 IF lift_sensor = '1' AND NOT (licence_plate_in = "0000000000000000") THEN
+                    sel <= "01";
                     enablelift <= '1';
                     IF liftready = '1' THEN
                         next_state <= INSUCCESS;
@@ -199,24 +220,25 @@ BEGIN
             WHEN INSUCCESS =>
                 car_ready <= '1';
                 enablelift <= '0';
+                sel <= "10";
                 parking_array(to_integer(unsigned(header(3 DOWNTO 2))), to_integer(unsigned(header(1 DOWNTO 0)))).room_status := '1';
                 parking_array(to_integer(unsigned(header(3 DOWNTO 2))), to_integer(unsigned(header(1 DOWNTO 0)))).plate := licence_plate_in;
                 parking_array(to_integer(unsigned(header(3 DOWNTO 2))), to_integer(unsigned(header(1 DOWNTO 0)))).timer := now;
                 password_sig <= hash(licence_plate_in);
                 parking_array(to_integer(unsigned(header(3 DOWNTO 2))), to_integer(unsigned(header(1 DOWNTO 0)))).password := password_sig;
-                
+
                 next_state <= IDLE;
-            
+
             WHEN PASSFAIL =>
                 pass_stat_var := '0';
                 next_state <= IDLE;
 
             WHEN PASSSUCCESS =>
-                if (pass_stat_var = '0') then
+                IF (pass_stat_var = '0') THEN
                     price := (now - parking_array(to_integer(unsigned(header(3 DOWNTO 2))), to_integer(unsigned(header(1 DOWNTO 0)))).timer) / 1 ps;
                     REPORT "Price: " & INTEGER'image(price);
                     price_out <= price;
-                end if;
+                END IF;
                 pass_stat_var := '1';
                 IF paid = '1' THEN
                     enablelift <= '1';
