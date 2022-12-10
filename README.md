@@ -39,8 +39,10 @@ Automatic parking assignment refers to the use of technology to automatically as
 Calculating the fee for parking refers to the process of determining the amount of money that a driver should pay to park their car in a parking system. The fee can be based on various factors, such as the duration of the parking. To calculate the fee for parking, the parking system may use inputs, such as the time that the car entered the parking system and the time that the car left the parking system. Once the inputs have been collected and processed, the system can use the rules or algorithms to calculate the fee for parking. The result of the calculation can be displayed to the driver and it can be automatically applied to the payment process.
 
 ---
-## *Circuit Diagram Schematic*
----
+## *Program Diagram Schematic*
+Here is a picture of the program diagram that has been created : 
+
+![WhatsApp Image 2022-12-10 at 19 47 27](https://user-images.githubusercontent.com/88524719/206857628-ce9f80f8-80d9-491b-8561-da47b1a0db30.jpeg)
 
 ## *Application Program Reports*
 ---
