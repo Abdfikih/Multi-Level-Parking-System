@@ -7,7 +7,6 @@ USE work.room_memory.ALL;
 ENTITY lift_controller IS
     PORT (
         clk : IN STD_LOGIC;
-        reset : IN STD_LOGIC := '0';
 
         -- memberi tahu posisi ruangan yang akan dituju 
         position_header : IN STD_LOGIC_VECTOR(3 DOWNTO 0) := (OTHERS => '0'); --kl mau parkir nilainya dpt dari function, kl mau ambil nilanya dapet dr password
@@ -93,6 +92,7 @@ BEGIN
                 next_state <= base_floor;
                 current_floor <= 0;
                 current_room <= 0;
+                
             WHEN Park =>
                 ready <= '1';
                 next_state <= base_floor;

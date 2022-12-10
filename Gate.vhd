@@ -11,7 +11,6 @@ ENTITY Gate IS
     PORT (
         gate_sensor : IN STD_LOGIC;
         lift_sensor : IN STD_LOGIC;
-        reset_lift : IN STD_LOGIC;
         mode : IN STD_LOGIC;
         clk : IN STD_LOGIC;
         paid : IN STD_LOGIC;
@@ -23,7 +22,8 @@ ENTITY Gate IS
         password_in : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
         password_out : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
         car_ready : OUT STD_LOGIC;
-        price_out : OUT INTEGER
+        price_out : OUT INTEGER;
+        pass_status : OUT STD_LOGIC := '0'
         -- time_stamp : out integer
 
     );
@@ -34,8 +34,6 @@ ARCHITECTURE rtl OF Gate IS
     COMPONENT lift_controller IS
         PORT (
             clk : IN STD_LOGIC;
-            reset : IN STD_LOGIC := '0';
-
             -- memberi tahu posisi ruangan yang akan dituju 
             position_header : IN STD_LOGIC_VECTOR(3 DOWNTO 0) := (OTHERS => '0'); --kl mau parkir nilainya dpt dari function, kl mau ambil nilanya dapet dr password
 
@@ -73,7 +71,7 @@ ARCHITECTURE rtl OF Gate IS
     SIGNAL priceout : INTEGER;
 BEGIN
 
-    controllift : lift_controller PORT MAP(clk, reset_lift, header, enablelift, mode, liftready);
+    controllift : lift_controller PORT MAP(clk, header, enablelift, mode, liftready);
     
     --synchronize process
     sync_proc : PROCESS (clk, next_state)
@@ -87,15 +85,18 @@ BEGIN
     comb_proc : PROCESS (present_state, gate_sensor, lift_sensor, mode, enable, password_ready, licence_plate_in, password_in, paid, liftready)
         VARIABLE price, timeelapsed : INTEGER := 0;
         VARIABLE overload_var : STD_LOGIC;
+        VARIABLE pass_stat_var : STD_LOGIC;
     BEGIN
         password_out <= password_sig;
         park <= parking_array;
         header_out <= header;
         overload_out <= overload_var;
+        pass_status <= pass_stat_var;
         CASE present_state IS 
             WHEN IDLE =>
                 car_ready <= '0';
                 overload_var := '0';
+                pass_stat_var := '0';
                 IF gate_sensor = '1' THEN
                     next_state <= SELECTMODE;
                 ELSE
@@ -219,12 +220,18 @@ BEGIN
                 parking_array(to_integer(unsigned(header(3 DOWNTO 2))), to_integer(unsigned(header(1 DOWNTO 0)))).password := password_sig;
                 
                 next_state <= IDLE;
+            
             WHEN PASSFAIL =>
+                pass_stat_var := '0';
                 next_state <= IDLE;
+
             WHEN PASSSUCCESS =>
-                price := (now - parking_array(to_integer(unsigned(header(3 DOWNTO 2))), to_integer(unsigned(header(1 DOWNTO 0)))).timer) / 1 ps;
-                REPORT "Price: " & INTEGER'image(price);
-                price_out <= price;
+                if (pass_stat_var = '0') then
+                    price := (now - parking_array(to_integer(unsigned(header(3 DOWNTO 2))), to_integer(unsigned(header(1 DOWNTO 0)))).timer) / 1 ps;
+                    REPORT "Price: " & INTEGER'image(price);
+                    price_out <= price;
+                end if;
+                pass_stat_var := '1';
                 IF paid = '1' THEN
                     enablelift <= '1';
                     IF liftready = '1' THEN
@@ -239,8 +246,10 @@ BEGIN
                 ELSE
                     next_state <= PASSSUCCESS;
                 END IF;
+
             WHEN OVERLOAD =>
                 next_state <= IDLE;
+
         END CASE;
     END PROCESS;
 

@@ -24,7 +24,6 @@ architecture rtl of testbench is
 
     signal gate_sensor_tb : STD_LOGIC := '0';
     signal lift_sensor_tb : STD_LOGIC := '0';
-    signal reset_lift_tb : STD_LOGIC := '0';
     signal mode_tb : STD_LOGIC := '0'; 
     signal CLK_tb : STD_LOGIC := '0';
     signal paid_tb : STD_LOGIC := '0';
@@ -39,7 +38,7 @@ architecture rtl of testbench is
     SIGNAL price_out_tb : INTEGER := 0;
 begin
     gate : entity work.Gate
-        port map (gate_sensor_tb, lift_sensor_tb, reset_lift_tb, mode_tb, CLK_tb, paid_tb, enable_tb, overload_out_tb, 
+        port map (gate_sensor_tb, lift_sensor_tb, mode_tb, CLK_tb, paid_tb, enable_tb, overload_out_tb, 
                   password_ready_tb, header_out_tb, licence_plate_in_tb, password_in_tb, password_out_tb, car_ready_tb, price_out_tb);
     CLK_tb <= NOT CLK_tb AFTER 100 ps;
     CLK <= NOT CLK After 200 ps;
@@ -82,7 +81,6 @@ begin
                 end if;
                 gate_sensor_tb <= '1';
                 lift_sensor_tb <= '1';
-                reset_lift_tb <= '0';
                 mode_tb <= '1';
                 paid_tb <= '0';
                 enable_tb <= '1';
@@ -96,7 +94,6 @@ begin
                 end if;
                 gate_sensor_tb <= '1';
                 lift_sensor_tb <= '1';
-                reset_lift_tb <= '0';
                 mode_tb <= '1';
                 paid_tb <= '0';
                 enable_tb <= '1';
@@ -107,7 +104,6 @@ begin
             WHEN pick_out => 
                 gate_sensor_tb <= '1';
                 lift_sensor_tb <= '1';
-                reset_lift_tb <= '0';
                 mode_tb <= '0';
                 paid_tb <= '1'; --dah bayar
                 enable_tb <= '1';
