@@ -13,13 +13,13 @@ ENTITY lift_controller IS
         position_header : IN STD_LOGIC_VECTOR(3 DOWNTO 0) := (OTHERS => '0'); --kl mau parkir nilainya dpt dari function, kl mau ambil nilanya dapet dr password
 
         -- if pick, tell wether the client is already paid or not
-        paid : IN STD_LOGIC := '0';
+        enable : IN STD_LOGIC := '0';
 
         --00 : no client
         --01 : park in
         --10 : pick up
         --11 : done
-        lifting_state : INOUT STD_LOGIC_VECTOR(1 DOWNTO 0) := (OTHERS => '0');
+        mode : IN STD_LOGIC := '0';
 
         --0 : closed
         --1 : open
@@ -34,14 +34,14 @@ END ENTITY lift_controller;
 ARCHITECTURE rtl OF lift_controller IS
     TYPE states IS (base_floor, search_floor, search_room, pick, park);
     SIGNAL present_state, next_state : states := base_floor;
-    
+
     SIGNAL number_of_floor : INTEGER := 0;
     SIGNAL number_of_room : INTEGER := 0;
     SIGNAL current_floor : INTEGER := 0;
     SIGNAL current_room : INTEGER := 0;
-
+    SIGNAL lifting_state : STD_LOGIC_VECTOR(1 DOWNTO 0) := (OTHERS => '0');
     SIGNAL out_park : parking_lot := parking_array;
-   
+
 BEGIN
     proc_sync : PROCESS (CLK, next_state)
     BEGIN
@@ -51,7 +51,7 @@ BEGIN
         END IF;
     END PROCESS proc_sync;
 
-    proc_comb : PROCESS (present_state, current_floor, current_room, lifting_state, paid, position_header)
+    proc_comb : PROCESS (present_state, current_floor, current_room, lifting_state, mode, enable, position_header)
     BEGIN
         number_of_floor <= to_integer(unsigned(position_header(3 DOWNTO 2)));
         number_of_room <= to_integer(unsigned(position_header(1 DOWNTO 0)));
@@ -60,12 +60,11 @@ BEGIN
         CASE present_state IS
             WHEN base_floor =>
                 --toggling the ready signal back to 0
-                if(ready = '1') then ready <= '0'; end if;
+                IF (ready = '1') THEN
+                    ready <= '0';
+                END IF;
 
-                IF lifting_state = "00" OR 
-                   lifting_state = "11" OR 
-                  (lifting_state = "10" and paid = '0')
-                    THEN
+                IF enable = '0' THEN
                     next_state <= base_floor;
                 ELSE
                     next_state <= search_floor;
@@ -80,7 +79,7 @@ BEGIN
 
             WHEN search_room =>
                 IF current_room = number_of_room THEN
-                    IF lifting_state = "01" THEN
+                    IF mode = '1' THEN
                         next_state <= Park;
                     ELSE
                         next_state <= Pick;
@@ -91,25 +90,24 @@ BEGIN
 
             WHEN Pick =>
                 ready <= '1';
-                
+                next_state <= base_floor;
+                current_floor <= 0;
+                current_room <= 0;
             WHEN Park =>
-                parking_array(number_of_floor, number_of_room).room_status := '1';
                 ready <= '1';
                 next_state <= base_floor;
                 current_floor <= 0;
                 current_room <= 0;
         END CASE;
 
-        if(ready = '1') then 
-            lifting_state <= "11";
+        IF (ready = '1') THEN
+            --lifting_state <= "11";
             next_state <= base_floor;
             current_floor <= 0;
             current_room <= 0;
-        end if;
+        END IF;
     END PROCESS;
 END ARCHITECTURE;
-
-
 
 --read the the lifting state : pick or put 
 -- using priority encoder

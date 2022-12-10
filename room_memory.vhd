@@ -19,7 +19,7 @@ PACKAGE room_memory IS
     CONSTANT def_plate : STD_LOGIC_VECTOR(15 DOWNTO 0) := (OTHERS => '0');
 
     SHARED VARIABLE parking_array : parking_lot := (
-    (('0', 0, 0 min, def_password, def_plate), ('0', 0, 0 min, def_password, def_plate), ('0', 0, 0 min, def_password, def_plate), ('0', 0, 0 min, def_password, def_plate)),
+        (('0', 0, 0 min, def_password, def_plate), ('0', 0, 0 min, def_password, def_plate), ('0', 0, 0 min, def_password, def_plate), ('0', 0, 0 min, def_password, def_plate)),
         (('0', 0, 0 min, def_password, def_plate), ('0', 0, 0 min, def_password, def_plate), ('0', 0, 0 min, def_password, def_plate), ('0', 0, 0 min, def_password, def_plate)),
         (('0', 0, 0 min, def_password, def_plate), ('0', 0, 0 min, def_password, def_plate), ('0', 0, 0 min, def_password, def_plate), ('0', 0, 0 min, def_password, def_plate)),
         (('0', 0, 0 min, def_password, def_plate), ('0', 0, 0 min, def_password, def_plate), ('0', 0, 0 min, def_password, def_plate), ('0', 0, 0 min, def_password, def_plate))
