@@ -8,17 +8,21 @@ Multi-level parking systems offer a solution to these challenges by providing ad
 In addition to increased parking capacity, multi-level parking systems can also provide additional safety features, such as security cameras and controlled access, that can help to prevent accidents and reduce the risk of theft and vandalism. They can also make it easier for drivers to find a parking spot, thanks to features like directional signs and automatic parking guidance systems. This can help to reduce traffic congestion and improve the overall parking experience.
 Furthermore, a multi-level parking system can help to reduce the amount of land and resources required for parking, which can have a positive impact on the environment. This can be especially important in urban areas where space is limited and the demand for parking is high.
  
-This program created by: Grup A6 PSD 01
+----
+## *DESCRIPTIONS*
+----
+This project aims to develop a VHDL-based simulation of a multi-level parking system. The system will be able to simulate the behavior of a parking lot with multiple floors and different capacities for each floor. The main function of the multi-level parking system is to provide a convenient and organized way to park cars in a large parking lot with multiple floors.
+
+The system has a feature where when a car enters the gate, a check will be made on the availability of parking spaces. If the parking space is full, the lights will turn on and if it is available, the lights will turn off. When the parking space is available, the input of the license plate number will be made. When the license plate number is entered, the license plate number will be converted into a 32-bit password where the encryption algorithm has been determined in the code. Both will be displayed on the seven-segment alternately, which is regulated by the multiplexer and entered into the record so that it will be recorded and stored. After the car has been successfully placed in the available parking space in multi level park, the time of entry will be stored and the time will continue to run until the car is ready to be taken. When the car is ready to be taken, the user will be asked to enter the license plate number and password of the car. Then, the duration of the parking time will stop and be multiplied by the unit parking fee. After that, the parking fee to be paid will be displayed, then payment is made automatically and the car successfully exits. The memory of the existing car will be erased and ready to be filled with cars that want to enter.
+
+This program created by: 
+*Grup A6 PSD 01*
 1. Abdul Fikih Kurnia                    (2106731485)
 2. Aqib Rahman Radhi                     (2106731226)
 3. Bernanda Nautval Raihan Ihza Windarto (2106708463)
 4. Rafie Amandio Fauzan                  (2106731232)
-----
-## *FUNCTIONS*
-----
-This project aims to develop a VHDL-based simulation of a multi-level parking system. The system will be able to simulate the behavior of a parking lot with multiple floors and different capacities for each floor.
-The main function of the multi-level parking system is to provide a convenient and organized way to park cars in a large parking lot with multiple floors.
 
+---
 ## *FEATURE*
 ---
 ### Encrypt Password
@@ -34,6 +38,7 @@ Automatic parking assignment refers to the use of technology to automatically as
 ### Calculate The Parking Fee According To The Duration
 Calculating the fee for parking refers to the process of determining the amount of money that a driver should pay to park their car in a parking system. The fee can be based on various factors, such as the duration of the parking. To calculate the fee for parking, the parking system may use inputs, such as the time that the car entered the parking system and the time that the car left the parking system. Once the inputs have been collected and processed, the system can use the rules or algorithms to calculate the fee for parking. The result of the calculation can be displayed to the driver and it can be automatically applied to the payment process.
 
+---
 ## *Circuit Diagram Schematic*
 ---
 
@@ -62,3 +67,5 @@ Mux 4 to 1 will function as a selector for which output will be displayed on the
 
 ### *Seven Segment*
 The seven segment will display the output of the 16-bit input/out license plate number and the 32-bit input/out password. Here the license plate that is 16 bits will be ampersanded so that it can become 32 bits and there will be 8 seven segments which are hexadecimal so that 1 seven segment processes 4 bits.
+
+---
