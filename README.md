@@ -46,7 +46,9 @@ Here is a picture of the program diagram that has been created :
 
 ## *Application Program Reports*
 ---
+<a href="https://drive.google.com/drive/folders/17OTg8yu2XXhIvkLqwTVwykwKk-fdX3bE?usp=sharing" target="_blank">Click Here To View The Complete Project Report</a>
 
+---
 ## *Functions*
 ---
 ### *Gate*
