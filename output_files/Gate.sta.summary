@@ -1,0 +1,405 @@
+------------------------------------------------------------
+Timing Analyzer Summary
+------------------------------------------------------------
+
+Type  : Slow 1100mV 85C Model Setup 'header[2]'
+Slack : -13.533
+TNS   : -3665.118
+
+Type  : Slow 1100mV 85C Model Setup 'header[0]'
+Slack : -12.923
+TNS   : -3856.720
+
+Type  : Slow 1100mV 85C Model Setup 'password_in[0]'
+Slack : -12.413
+TNS   : -42.136
+
+Type  : Slow 1100mV 85C Model Setup 'present_state.INSUCCESS'
+Slack : -10.894
+TNS   : -3581.692
+
+Type  : Slow 1100mV 85C Model Setup 'clk'
+Slack : -7.185
+TNS   : -40.444
+
+Type  : Slow 1100mV 85C Model Setup 'lift_controller:controllift|present_state.base_floor'
+Slack : -5.055
+TNS   : -5.055
+
+Type  : Slow 1100mV 85C Model Setup 'licence_plate_in[0]'
+Slack : -2.181
+TNS   : -2.181
+
+Type  : Slow 1100mV 85C Model Hold 'password_in[0]'
+Slack : -8.560
+TNS   : -29.211
+
+Type  : Slow 1100mV 85C Model Hold 'licence_plate_in[0]'
+Slack : -3.256
+TNS   : -3.256
+
+Type  : Slow 1100mV 85C Model Hold 'header[0]'
+Slack : -1.747
+TNS   : -1.747
+
+Type  : Slow 1100mV 85C Model Hold 'clk'
+Slack : -1.381
+TNS   : -2.428
+
+Type  : Slow 1100mV 85C Model Hold 'header[2]'
+Slack : -1.087
+TNS   : -1.087
+
+Type  : Slow 1100mV 85C Model Hold 'present_state.INSUCCESS'
+Slack : 2.186
+TNS   : 0.000
+
+Type  : Slow 1100mV 85C Model Hold 'lift_controller:controllift|present_state.base_floor'
+Slack : 3.241
+TNS   : 0.000
+
+Type  : Slow 1100mV 85C Model Recovery 'header[2]'
+Slack : -4.998
+TNS   : -152.887
+
+Type  : Slow 1100mV 85C Model Recovery 'header[0]'
+Slack : -4.376
+TNS   : -146.766
+
+Type  : Slow 1100mV 85C Model Removal 'header[0]'
+Slack : 0.932
+TNS   : 0.000
+
+Type  : Slow 1100mV 85C Model Removal 'header[2]'
+Slack : 1.154
+TNS   : 0.000
+
+Type  : Slow 1100mV 85C Model Minimum Pulse Width 'password_in[0]'
+Slack : -3.900
+TNS   : -102.732
+
+Type  : Slow 1100mV 85C Model Minimum Pulse Width 'clk'
+Slack : -0.724
+TNS   : -15.517
+
+Type  : Slow 1100mV 85C Model Minimum Pulse Width 'header[0]'
+Slack : -0.171
+TNS   : -0.428
+
+Type  : Slow 1100mV 85C Model Minimum Pulse Width 'present_state.INSUCCESS'
+Slack : -0.092
+TNS   : -0.458
+
+Type  : Slow 1100mV 85C Model Minimum Pulse Width 'header[2]'
+Slack : 0.056
+TNS   : 0.000
+
+Type  : Slow 1100mV 85C Model Minimum Pulse Width 'licence_plate_in[0]'
+Slack : 0.240
+TNS   : 0.000
+
+Type  : Slow 1100mV 85C Model Minimum Pulse Width 'lift_controller:controllift|present_state.base_floor'
+Slack : 0.376
+TNS   : 0.000
+
+Type  : Slow 1100mV 0C Model Setup 'header[2]'
+Slack : -13.537
+TNS   : -3629.854
+
+Type  : Slow 1100mV 0C Model Setup 'header[0]'
+Slack : -13.013
+TNS   : -3822.294
+
+Type  : Slow 1100mV 0C Model Setup 'password_in[0]'
+Slack : -12.332
+TNS   : -42.126
+
+Type  : Slow 1100mV 0C Model Setup 'present_state.INSUCCESS'
+Slack : -10.529
+TNS   : -3530.844
+
+Type  : Slow 1100mV 0C Model Setup 'clk'
+Slack : -7.209
+TNS   : -38.314
+
+Type  : Slow 1100mV 0C Model Setup 'lift_controller:controllift|present_state.base_floor'
+Slack : -5.216
+TNS   : -5.216
+
+Type  : Slow 1100mV 0C Model Setup 'licence_plate_in[0]'
+Slack : -2.066
+TNS   : -2.066
+
+Type  : Slow 1100mV 0C Model Hold 'password_in[0]'
+Slack : -8.364
+TNS   : -28.779
+
+Type  : Slow 1100mV 0C Model Hold 'licence_plate_in[0]'
+Slack : -3.795
+TNS   : -3.795
+
+Type  : Slow 1100mV 0C Model Hold 'header[0]'
+Slack : -1.768
+TNS   : -1.768
+
+Type  : Slow 1100mV 0C Model Hold 'clk'
+Slack : -1.509
+TNS   : -3.962
+
+Type  : Slow 1100mV 0C Model Hold 'header[2]'
+Slack : -1.176
+TNS   : -1.176
+
+Type  : Slow 1100mV 0C Model Hold 'present_state.INSUCCESS'
+Slack : 2.268
+TNS   : 0.000
+
+Type  : Slow 1100mV 0C Model Hold 'lift_controller:controllift|present_state.base_floor'
+Slack : 3.404
+TNS   : 0.000
+
+Type  : Slow 1100mV 0C Model Recovery 'header[2]'
+Slack : -4.863
+TNS   : -146.172
+
+Type  : Slow 1100mV 0C Model Recovery 'header[0]'
+Slack : -4.213
+TNS   : -143.433
+
+Type  : Slow 1100mV 0C Model Removal 'header[0]'
+Slack : 0.509
+TNS   : 0.000
+
+Type  : Slow 1100mV 0C Model Removal 'header[2]'
+Slack : 0.674
+TNS   : 0.000
+
+Type  : Slow 1100mV 0C Model Minimum Pulse Width 'password_in[0]'
+Slack : -3.839
+TNS   : -101.803
+
+Type  : Slow 1100mV 0C Model Minimum Pulse Width 'clk'
+Slack : -0.724
+TNS   : -15.531
+
+Type  : Slow 1100mV 0C Model Minimum Pulse Width 'header[0]'
+Slack : -0.146
+TNS   : -0.408
+
+Type  : Slow 1100mV 0C Model Minimum Pulse Width 'present_state.INSUCCESS'
+Slack : -0.103
+TNS   : -0.922
+
+Type  : Slow 1100mV 0C Model Minimum Pulse Width 'header[2]'
+Slack : 0.013
+TNS   : 0.000
+
+Type  : Slow 1100mV 0C Model Minimum Pulse Width 'licence_plate_in[0]'
+Slack : 0.215
+TNS   : 0.000
+
+Type  : Slow 1100mV 0C Model Minimum Pulse Width 'lift_controller:controllift|present_state.base_floor'
+Slack : 0.370
+TNS   : 0.000
+
+Type  : Fast 1100mV 85C Model Setup 'password_in[0]'
+Slack : -5.993
+TNS   : -19.996
+
+Type  : Fast 1100mV 85C Model Setup 'header[2]'
+Slack : -5.523
+TNS   : -1487.958
+
+Type  : Fast 1100mV 85C Model Setup 'header[0]'
+Slack : -5.266
+TNS   : -1555.488
+
+Type  : Fast 1100mV 85C Model Setup 'present_state.INSUCCESS'
+Slack : -4.797
+TNS   : -1507.777
+
+Type  : Fast 1100mV 85C Model Setup 'clk'
+Slack : -3.222
+TNS   : -17.890
+
+Type  : Fast 1100mV 85C Model Setup 'lift_controller:controllift|present_state.base_floor'
+Slack : -1.493
+TNS   : -1.493
+
+Type  : Fast 1100mV 85C Model Setup 'licence_plate_in[0]'
+Slack : -0.987
+TNS   : -0.987
+
+Type  : Fast 1100mV 85C Model Hold 'password_in[0]'
+Slack : -4.340
+TNS   : -15.115
+
+Type  : Fast 1100mV 85C Model Hold 'licence_plate_in[0]'
+Slack : -1.075
+TNS   : -1.075
+
+Type  : Fast 1100mV 85C Model Hold 'clk'
+Slack : -0.582
+TNS   : -0.843
+
+Type  : Fast 1100mV 85C Model Hold 'header[0]'
+Slack : -0.475
+TNS   : -0.475
+
+Type  : Fast 1100mV 85C Model Hold 'header[2]'
+Slack : -0.186
+TNS   : -0.186
+
+Type  : Fast 1100mV 85C Model Hold 'present_state.INSUCCESS'
+Slack : 0.912
+TNS   : 0.000
+
+Type  : Fast 1100mV 85C Model Hold 'lift_controller:controllift|present_state.base_floor'
+Slack : 1.370
+TNS   : 0.000
+
+Type  : Fast 1100mV 85C Model Recovery 'header[2]'
+Slack : -2.210
+TNS   : -64.992
+
+Type  : Fast 1100mV 85C Model Recovery 'header[0]'
+Slack : -1.889
+TNS   : -62.179
+
+Type  : Fast 1100mV 85C Model Removal 'header[0]'
+Slack : 0.639
+TNS   : 0.000
+
+Type  : Fast 1100mV 85C Model Removal 'header[2]'
+Slack : 0.648
+TNS   : 0.000
+
+Type  : Fast 1100mV 85C Model Minimum Pulse Width 'password_in[0]'
+Slack : -2.172
+TNS   : -46.509
+
+Type  : Fast 1100mV 85C Model Minimum Pulse Width 'licence_plate_in[0]'
+Slack : -0.205
+TNS   : -0.717
+
+Type  : Fast 1100mV 85C Model Minimum Pulse Width 'clk'
+Slack : -0.087
+TNS   : -1.198
+
+Type  : Fast 1100mV 85C Model Minimum Pulse Width 'header[0]'
+Slack : 0.038
+TNS   : 0.000
+
+Type  : Fast 1100mV 85C Model Minimum Pulse Width 'present_state.INSUCCESS'
+Slack : 0.048
+TNS   : 0.000
+
+Type  : Fast 1100mV 85C Model Minimum Pulse Width 'header[2]'
+Slack : 0.064
+TNS   : 0.000
+
+Type  : Fast 1100mV 85C Model Minimum Pulse Width 'lift_controller:controllift|present_state.base_floor'
+Slack : 0.355
+TNS   : 0.000
+
+Type  : Fast 1100mV 0C Model Setup 'password_in[0]'
+Slack : -5.280
+TNS   : -17.353
+
+Type  : Fast 1100mV 0C Model Setup 'header[2]'
+Slack : -5.146
+TNS   : -1343.127
+
+Type  : Fast 1100mV 0C Model Setup 'header[0]'
+Slack : -4.934
+TNS   : -1404.694
+
+Type  : Fast 1100mV 0C Model Setup 'present_state.INSUCCESS'
+Slack : -4.295
+TNS   : -1372.187
+
+Type  : Fast 1100mV 0C Model Setup 'clk'
+Slack : -2.854
+TNS   : -14.743
+
+Type  : Fast 1100mV 0C Model Setup 'lift_controller:controllift|present_state.base_floor'
+Slack : -1.388
+TNS   : -1.388
+
+Type  : Fast 1100mV 0C Model Setup 'licence_plate_in[0]'
+Slack : -0.497
+TNS   : -0.497
+
+Type  : Fast 1100mV 0C Model Hold 'password_in[0]'
+Slack : -4.014
+TNS   : -14.082
+
+Type  : Fast 1100mV 0C Model Hold 'licence_plate_in[0]'
+Slack : -1.307
+TNS   : -1.307
+
+Type  : Fast 1100mV 0C Model Hold 'clk'
+Slack : -0.635
+TNS   : -1.333
+
+Type  : Fast 1100mV 0C Model Hold 'header[0]'
+Slack : -0.427
+TNS   : -0.427
+
+Type  : Fast 1100mV 0C Model Hold 'header[2]'
+Slack : -0.186
+TNS   : -0.186
+
+Type  : Fast 1100mV 0C Model Hold 'present_state.INSUCCESS'
+Slack : 1.013
+TNS   : 0.000
+
+Type  : Fast 1100mV 0C Model Hold 'lift_controller:controllift|present_state.base_floor'
+Slack : 1.354
+TNS   : 0.000
+
+Type  : Fast 1100mV 0C Model Recovery 'header[2]'
+Slack : -1.828
+TNS   : -52.518
+
+Type  : Fast 1100mV 0C Model Recovery 'header[0]'
+Slack : -1.616
+TNS   : -50.531
+
+Type  : Fast 1100mV 0C Model Removal 'header[0]'
+Slack : 0.488
+TNS   : 0.000
+
+Type  : Fast 1100mV 0C Model Removal 'header[2]'
+Slack : 0.502
+TNS   : 0.000
+
+Type  : Fast 1100mV 0C Model Minimum Pulse Width 'password_in[0]'
+Slack : -1.909
+TNS   : -39.012
+
+Type  : Fast 1100mV 0C Model Minimum Pulse Width 'licence_plate_in[0]'
+Slack : -0.161
+TNS   : -0.555
+
+Type  : Fast 1100mV 0C Model Minimum Pulse Width 'clk'
+Slack : -0.088
+TNS   : -1.202
+
+Type  : Fast 1100mV 0C Model Minimum Pulse Width 'header[0]'
+Slack : 0.114
+TNS   : 0.000
+
+Type  : Fast 1100mV 0C Model Minimum Pulse Width 'present_state.INSUCCESS'
+Slack : 0.135
+TNS   : 0.000
+
+Type  : Fast 1100mV 0C Model Minimum Pulse Width 'header[2]'
+Slack : 0.139
+TNS   : 0.000
+
+Type  : Fast 1100mV 0C Model Minimum Pulse Width 'lift_controller:controllift|present_state.base_floor'
+Slack : 0.377
+TNS   : 0.000
+
+------------------------------------------------------------

@@ -1,0 +1,20 @@
+
+State Machine - |Gate|present_state
+Name present_state.LICENSEINSERT present_state.INSUCCESS present_state.OVERLOAD present_state.PASSFAIL present_state.PASSSUCCESS present_state.CAROUT present_state.CARIN present_state.SELECTMODE present_state.IDLE 
+present_state.IDLE 0 0 0 0 0 0 0 0 0 
+present_state.SELECTMODE 0 0 0 0 0 0 0 1 1 
+present_state.CARIN 0 0 0 0 0 0 1 0 1 
+present_state.CAROUT 0 0 0 0 0 1 0 0 1 
+present_state.PASSSUCCESS 0 0 0 0 1 0 0 0 1 
+present_state.PASSFAIL 0 0 0 1 0 0 0 0 1 
+present_state.OVERLOAD 0 0 1 0 0 0 0 0 1 
+present_state.INSUCCESS 0 1 0 0 0 0 0 0 1 
+present_state.LICENSEINSERT 1 0 0 0 0 0 0 0 1 
+
+State Machine - |Gate|lift_controller:controllift|present_state
+Name present_state.park present_state.pick present_state.search_room present_state.search_floor present_state.base_floor 
+present_state.base_floor 0 0 0 0 0 
+present_state.search_floor 0 0 0 1 1 
+present_state.search_room 0 0 1 0 1 
+present_state.pick 0 1 0 0 1 
+present_state.park 1 0 0 0 1 

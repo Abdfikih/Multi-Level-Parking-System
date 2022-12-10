@@ -7,25 +7,9 @@ USE work.room_memory.ALL;
 ENTITY lift_controller IS
     PORT (
         clk : IN STD_LOGIC;
-        reset : IN STD_LOGIC := '0';
-
-        -- memberi tahu posisi ruangan yang akan dituju 
-        position_header : IN STD_LOGIC_VECTOR(3 DOWNTO 0) := (OTHERS => '0'); --kl mau parkir nilainya dpt dari function, kl mau ambil nilanya dapet dr password
-
-        -- if pick, tell wether the client is already paid or not
+        position_header : IN STD_LOGIC_VECTOR(3 DOWNTO 0) := (OTHERS => '0'); 
         enable : IN STD_LOGIC := '0';
-
-        --00 : no client
-        --01 : park in
-        --10 : pick up
-        --11 : done
         mode : IN STD_LOGIC := '0';
-
-        --0 : closed
-        --1 : open
-        --lift_door : OUT STD_LOGIC := '0';
-
-        --to 1 if lifting state is 11
         ready : INOUT STD_LOGIC := '0'
 
     );
@@ -93,6 +77,7 @@ BEGIN
                 next_state <= base_floor;
                 current_floor <= 0;
                 current_room <= 0;
+
             WHEN Park =>
                 ready <= '1';
                 next_state <= base_floor;
@@ -108,18 +93,3 @@ BEGIN
         END IF;
     END PROCESS;
 END ARCHITECTURE;
-
---read the the lifting state : pick or put 
--- using priority encoder
--- 00 for idle
--- 01 for put
--- 10 for pick
--- 11 for done  
-
---read the position header to know the current floor and room
--- 1. convert the first 3 bits to integer to as the floor number
--- 2. convert the last 3 bits to integer to as the room number
---read the paid signal to know if the user has paid or not
-
---make model for each room, which consist 
---timer, 
