@@ -104,7 +104,7 @@ BEGIN
     END PROCESS;
 
     --comb process
-    comb_proc : PROCESS (present_state, gate_sensor, lift_sensor, mode, overload_signal, enable, password_ready, licence_plate_in, password_in, paid, liftready)
+    comb_proc : PROCESS (present_state, gate_sensor, lift_sensor, mode, enable, password_ready, licence_plate_in, password_in, paid, liftready)
         VARIABLE price, timeelapsed : INTEGER := 0;
         VARIABLE overload_var : STD_LOGIC;
     BEGIN
