@@ -7,11 +7,11 @@ USE work.room_memory.ALL;
 
 ENTITY control_payment IS
     PORT (
-        inp_mode : IN STD_LOGIC;
+        inp_mode : IN STD_LOGIC; -- input mode when car entry or out
         clk : IN STD_LOGIC;
-        i, j : IN integer;
-        inp_plat : IN STD_LOGIC_VECTOR (15 DOWNTO 0);
-        out_plat : OUT STD_LOGIC_VECTOR (15 DOWNTO 0)
+        i, j : IN integer; -- passing index 
+        inp_plat : IN STD_LOGIC_VECTOR (15 DOWNTO 0); -- input plat
+        out_plat : OUT STD_LOGIC_VECTOR (15 DOWNTO 0) -- out plat
     );
 END control_payment;
 
@@ -34,17 +34,17 @@ BEGIN
 
 
     BEGIN
-        out_memory <= parking_array;
+        out_memory <= parking_array; -- use package record
 
         IF rising_edge(clk) THEN
             CASE state IS
-                WHEN S0 =>
+                WHEN S0 => -- condition when car entry
                     IF (inp_mode = '0' OR price > 0) THEN
                         parking_array(i, j).plate := inp_plat;
-                        parking_array(i, j).timer := now;
+                        parking_array(i, j).timer := now; -- time simulation in real time
                         state <= S1;
                     END IF;
-                WHEN S1 =>
+                WHEN S1 => -- condition when car in out
                     IF (inp_mode = '1') THEN
                         temp_time := parking_array(i, j).timer;
                         inp_time := inp_time - temp_time;
@@ -53,7 +53,7 @@ BEGIN
                         parking_array(i, j).fee := price;
                         state <= S2;
                     END IF;
-                WHEN S2 =>
+                WHEN S2 => -- condition when user pay fee park
                     IF (inp_mode = '1' AND price > 0) THEN
                         parking_array(i, j).fee := price;
                         out_plat <= out_temp;
