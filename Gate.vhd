@@ -34,23 +34,9 @@ ARCHITECTURE rtl OF Gate IS
     COMPONENT lift_controller IS
         PORT (
             clk : IN STD_LOGIC;
-            -- memberi tahu posisi ruangan yang akan dituju 
-            position_header : IN STD_LOGIC_VECTOR(3 DOWNTO 0) := (OTHERS => '0'); --kl mau parkir nilainya dpt dari function, kl mau ambil nilanya dapet dr password
-
-            -- if pick, tell wether the client is already paid or not
+            position_header : IN STD_LOGIC_VECTOR(3 DOWNTO 0) := (OTHERS => '0'); 
             enable : IN STD_LOGIC := '0';
-
-            --00 : no client
-            --01 : park in
-            --10 : pick up
-            --11 : done
             mode : IN STD_LOGIC := '0';
-
-            --0 : closed
-            --1 : open
-            --lift_door : OUT STD_LOGIC := '0';
-
-            --to 1 if lifting state is 11
             ready : INOUT STD_LOGIC := '0'
 
         );

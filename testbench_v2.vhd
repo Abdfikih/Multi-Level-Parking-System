@@ -3,7 +3,6 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 use std.textio.all;
-
 USE work.room_memory.ALL;
 
 entity testbench_v2 is
